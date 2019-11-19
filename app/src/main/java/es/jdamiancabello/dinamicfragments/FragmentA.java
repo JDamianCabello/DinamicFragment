@@ -72,4 +72,29 @@ public class FragmentA extends Fragment {
         listener = null;
         Log.d(TAG,"FRAGMENTA -> onDetach()");
     }
+
+    static Fragment newInstance(Bundle bundle){
+      FragmentA fragmenta = new FragmentA();
+      if(bundle != null)
+          fragmenta.setArguments(bundle);
+      return fragmenta;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG,"FRAGMENTA -> onPause()");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"FRAGMENTA -> onResume()");
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG,"FRAGMENTA -> onCreate()");
+    }
 }

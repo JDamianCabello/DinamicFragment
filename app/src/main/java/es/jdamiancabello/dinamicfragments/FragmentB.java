@@ -17,6 +17,11 @@ public class FragmentB extends Fragment {
     private final String MESSAGE = "MESSAGE";
     private TextView tvMessage;
 
+
+    //Estas dos variables retienen el estado del fragment
+    private int size;
+    private String message;
+
     /**
      * Metodo creado por las directrices de Google [Patrón factoría]
      *
@@ -28,14 +33,19 @@ public class FragmentB extends Fragment {
     public static Fragment newInstance(Bundle bundle){
         FragmentB fragmentB = new FragmentB();
         if(bundle != null){
-            fragmentB.SetArguments(bundle);
+            fragmentB.setArguments(bundle);
         }
         return fragmentB;
     }
 
-    private void SetArguments(Bundle bundle) {
-        tvMessage.setTextSize(getArguments().getInt("Size"));
-        tvMessage.setText(getArguments().getString("Message"));
+    /**
+     * En este fragment se retiene su estado en una re-creación o cambio de configuración de la Activity
+     * @param savedInstanceState
+     */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Nullable
@@ -53,27 +63,32 @@ public class FragmentB extends Fragment {
 
         //Se comprueba si el fragment tiene argumentos. Se podría usar lo siguiente:
         //Bundle bundle = getArguments() y luego en el if se mira la condicion bundle != null
-        if(getArguments() != null){
-            tvMessage.setTextSize(getArguments().getInt("Size"));
-            tvMessage.setText(getArguments().getString("Message"));
+        if(savedInstanceState == null){
+            Bundle bundle = getArguments();
+                if (bundle != null) {
+                    message = bundle.getString(MESSAGE);
+                    size = bundle.getInt(SIZE);
+                }
         }
+        tvMessage.setText(message);
+        tvMessage.setTextSize(size);
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putFloat(SIZE,tvMessage.getTextSize());
-        outState.putString(MESSAGE,tvMessage.getText().toString());
-        Log.d(TAG,"FRAGMENTB -> onSaveInstanceState()");
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        Log.d(TAG,"FRAGMENTB -> onViewStateRestored()");
-        if(savedInstanceState != null){
-            tvMessage.setTextSize(getArguments().getInt("Size"));
-            tvMessage.setText(getArguments().getString("Message"));
-        }
-    }
+//    @Override
+//    public void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putFloat(SIZE,tvMessage.getTextSize());
+//        outState.putString(MESSAGE,tvMessage.getText().toString());
+//        Log.d(TAG,"FRAGMENTB -> onSaveInstanceState()");
+//    }
+//
+//    @Override
+//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+//        super.onViewStateRestored(savedInstanceState);
+//        Log.d(TAG,"FRAGMENTB -> onViewStateRestored()");
+//        if(savedInstanceState != null){
+//            tvMessage.setTextSize(getArguments().getInt("Size"));
+//            tvMessage.setText(getArguments().getString("Message"));
+//        }
+//    }
 }

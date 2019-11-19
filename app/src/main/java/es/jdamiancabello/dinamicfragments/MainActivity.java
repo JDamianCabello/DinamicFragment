@@ -14,25 +14,29 @@ public class MainActivity extends AppCompatActivity implements FragmentA.setOnTe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmenta = fragmentManager.findFragmentByTag(FragmentA.TAG);
 
-        //Se inicializa el FragmentA
-        fragmenta = new FragmentA();
-        fragmentTransaction.add(android.R.id.content,fragmenta,FragmentA.TAG);
-        fragmentTransaction.commit();
+
+        if (fragmenta == null) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+            //Se inicializa el FragmentA
+            fragmenta = FragmentA.newInstance(null);
+            fragmentTransaction.add(android.R.id.content,fragmenta,FragmentA.TAG);
+            fragmentTransaction.commit();
+        }
+
 
 
     }
 
     @Override
     public void onSetTextSize(String message, int size) {
-
         //Guardamos los parámetros para el fragment.
         Bundle bundle = new Bundle();
-        bundle.putString("Message",message);
-        bundle.putInt("Size",size);
+        bundle.putString("MESSAGE",message);
+        bundle.putInt("SIZE",size);
 
         //Se inicializa el FragmentB
         fragmentb = FragmentB.newInstance(bundle);
